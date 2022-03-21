@@ -1,0 +1,41 @@
+{
+    "name": "DevelopmentTools",
+    "version": "1.0.0",
+    "description": "Домашняя работа на курсе Инструменты разработки в SkyPro",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "http-server -p 3003",
+        "format": "prettier --write ./src",
+        "lint:css": "stylelint ./src/**.css",
+        "lint": "npm run lint:js && npm run lint:css",
+        "lint:js": " eslint ./src/**/*.js",
+        "clean": "rm -rf node_modules/",
+        "prepare": "husky install"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Livanenkova/DevelopmentToolsSkyPro.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Livanenkova/DevelopmentToolsSkyPro/issues"
+    },
+    "homepage": "https://github.com/Livanenkova/DevelopmentToolsSkyPro#readme",
+    "dependencies": {
+        "http-server": "^14.1.0"
+    },
+    "devDependencies": {
+        "eslint": "^8.11.0",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-plugin-prettier": "^4.0.0",
+        "husky": "^7.0.0",
+        "prettier": "^2.6.0",
+        "stylelint": "^14.6.0",
+        "stylelint-config-prettier": "^9.0.3",
+        "stylelint-config-standard": "^25.0.0",
+        "stylelint-prettier": "^2.0.0"
+    }
+}
