@@ -1,8 +1,5 @@
-const sum = (a, b) => {
-    if (a === b) {
-        return;
-    }
-    return '' + a + b;
-};
+const complexityBbutton = document.querySelector('.complexity__button');
 
-module.exports = { sum };
+complexityBbutton.addEventListener('click', () => {
+    location.href = 'play.html';
+});
