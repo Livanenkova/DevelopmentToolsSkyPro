@@ -1,3 +1,4 @@
+/* stylelint-disable selector-class-pattern */
 * {
     margin: 0;
     padding: 0;
@@ -9,7 +10,7 @@ img {
 
 body {
     /* stylelint-disable-next-line CssSyntaxError */
-    font-family: StratosSkyeng;
+    font-family: StratosSkyeng, sans-serif;
 }
 
 .container {
@@ -28,14 +29,6 @@ body {
     background: #004980;
     padding-left: 25px;
     padding-right: 25px;
-}
-
-.wrapper__card {
-    /* height: 100vh;
-  padding: 22px 22px 41px;
-  background: #004980;
-  padding-left: 25px;
-  padding-right: 25px; */
 }
 
 .container-top {
@@ -123,8 +116,7 @@ body {
 
 .popup__wrap {
     display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
+    flex-flow: column wrap;
     align-content: center;
     justify-content: center;
     align-items: center;
