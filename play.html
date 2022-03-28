@@ -5,7 +5,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Play</title>
-  <link rel="stylesheet" href="./src/style.css">
+  <link rel="stylesheet" href="./src/css/main.css">
   
 </head>
 <body>
@@ -23,112 +23,9 @@
     </div>
   </div>
 
-  <div class="container__card">
-
-  </div>
+  <div class="container__card"></div>
   </div>
 </div>
-
-<script>
-  const startPosition = ['тузпики','корольпики','дамапики','валетпики','10пики','9пики','8пики','7пики','6пики','тузчерви','корольчерви','дамачерви','валетчерви','10черви','9черви','8черви','7черви','6черви','тузбубны','корольбубны','дамабубны','валетбубны','10бубны','9бубны','8бубны','7бубны','6бубны','тузкрести','королькрести','дамакрести','валеткрести','10крести','9крести','8крести','7крести','6крести']
-
-  const CARD_NUMBER = 36;
-
-  function createElement(tagName,className) {
-      const tag = document.createElement(tagName);
-      
-      if (className){
-        tag.classList.add(className);
-      }
-      return tag;
-  };
-
-  const containerCard = document.querySelector('.container__card');
-
-  function AddcardBack() {
-
-    for(let i = 0; i < CARD_NUMBER;i++){
-      const wrapperCard = document.createElement('div');
-      wrapperCard.classList.add('wrapper__card');
-      containerCard.appendChild(wrapperCard);
-
-      const cardBackImg = document.createElement('img');
-      cardBackImg.classList.add('card__img');
-      cardBackImg.src = './img/рубашка.png';
-      wrapperCard.appendChild(cardBackImg);
-    }
-  } 
-  
-function AddcardStartPosition() {
-    for (let i = 0; i < startPosition.length;i++){
-      const wrapperCard = document.createElement('div');
-      wrapperCard.classList.add('wrapper__card');
-      containerCard.appendChild(wrapperCard);
-      const cardImg = document.createElement('img');
-      cardImg.classList.add('card__img');
-      cardImg.src = `./img/${startPosition[i]}.png`;
-      wrapperCard.appendChild(cardImg);
-    }
-} 
-
-function addResultPopup(urlimg, title, text, time) {
-    const wrapperCards = document.querySelector('.wrapper-cards');
-
-    createElement('div','popup',wrapperCards);
-
-    const popup = document.createElement('div');
-    popup.classList.add('popup');
-    wrapperCards.appendChild(popup);
-
-    const popupWrap = document.createElement('div');
-    popupWrap.classList.add('popup__wrap');
-    popup.appendChild(popupWrap);
-
-    const popupWrapImg = document.createElement('div');
-    popupWrapImg.classList.add('popup__wrap-img');
-    popupWrap.appendChild(popupWrapImg);
-
-    const popupImg = document.createElement('img');
-    popupImg.classList.add('popup__img');
-    popupImg.src = `./img/${urlimg}.png`;
-    popupWrapImg.appendChild(popupImg);
-    
-    const popupTitle = document.createElement('h2');
-    popupTitle.classList.add('popup__title');
-    popupTitle.textContent = title;
-    popupWrap.appendChild(popupTitle);
-
-    const popupText = document.createElement('div');
-    popupText.classList.add('popup__text');
-    popupText.textContent = text;
-    popupWrap.appendChild(popupText);
-
-    const popupTime = document.createElement('div');
-    popupTime.classList.add('popup__time');
-    popupTime.textContent = time;
-    popupWrap.appendChild(popupTime);
-
-    const popupButton = document.createElement('button');
-    popupButton.classList.add('popup__button', 'button');
-    popupButton.textContent = 'Играть снова';
-    popupWrap.appendChild(popupButton);
-    
-}
-
-function resultWin(){
-  AddcardStartPosition()
-  addResultPopup('winPic','Вы выиграли!','Затраченное время:', '01.20')
-}
-
-function resultLose(){
-  AddcardStartPosition()
-  addResultPopup('losePic','Вы проиграли!','Затраченное время:', '01.20')
-}
-
-// resultWin()
-resultLose()
-
-
-</script>
+<script src="./src/script.js"></script>
 </body>
 </html>
