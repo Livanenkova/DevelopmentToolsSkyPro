@@ -1,0 +1,14 @@
+/* stylelint-disable prettier/prettier */
+/* stylelint-disable property-no-unknown */
+@font-face {
+  /* stylelint-disable-next-line font-family-name-quotes */
+  font-family: 'StratosSkyeng';
+    src: url('./StratosSkyeng.eot');
+    src: url('./StratosSkyeng.eot?#iefix') format('embedded-opentype'),
+        url('./StratosSkyeng.svg#StratosSkyeng') format('svg'),
+        url('./StratosSkyeng.ttf') format('truetype'),
+        url('./StratosSkyeng.woff') format('woff'),
+        url('./StratosSkyeng.woff2') format('woff2');
+    fontweight: normal;
+    font-style: normal;
+};
