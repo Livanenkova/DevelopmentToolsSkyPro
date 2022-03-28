@@ -1,4 +1,4 @@
-import './css/style.css';
+import './style.css';
 // import winPic from './img/winPic.png';
 // import losePic from './img/losePic.png';
 // import Img from './img/рубашка.png';
