@@ -1,9 +1,6 @@
 import './style.css';
-// import winPic from './img/winPic.png';
-// import losePic from './img/losePic.png';
-// import Img from './img/рубашка.png';
-
-import { showPlayPage } from './play.js';
+import { showPlayPage } from './play';
+import * as _ from 'lodash';
 
 const wrap = document.createElement('div');
 wrap.classList.add('wrap');
@@ -56,17 +53,21 @@ export function startPage() {
     complexityButton.textContent = 'Старт';
     complexity.appendChild(complexityButton);
 
-    const complexitybutton = document.querySelector('.complexity__button');
-
-    let dataValue = [''];
+    let dataValue = '';
 
     complexityValue.addEventListener('click', (event) => {
-        dataValue = [];
-        dataValue = event.target.innerHTML;
-        event.target.style.border = '2px #004980 solid';
+        dataValue = '';
+        const target = event.target as HTMLElement;
+        dataValue = target.innerHTML;
+
+        target.style.border = '2px #004980 solid';
     });
 
-    complexitybutton.addEventListener('click', () => {
+    interface complexityButton {
+        readonly complexityButton: HTMLButtonElement;
+    }
+
+    complexityButton.addEventListener('click', () => {
         if (dataValue === '1') {
             console.log('выбран первый уровень');
             showPlayPage(dataValue);
@@ -83,28 +84,3 @@ export function startPage() {
 }
 
 startPage();
-
-// // JS
-// import { calc } from './script.js';
-// import _ from 'lodash';
-// //Assets
-// import Img from './img/winPic.png';
-// //CSS
-// import './css/style.css';
-
-// function component() {
-//     const element = document.createElement('div');
-
-//     const number = calc(1, 10);
-//     element.innerHTML = _.join(['Hello', `${number}`], ' ');
-//     // element.innerHTML = `Hello ${number}`;
-//     element.classList.add('foo');
-
-//     const myIcon = new Image();
-//     myIcon.src = Img;
-//     element.appendChild(myIcon);
-
-//     return element;
-// }
-
-// document.body.appendChild(component());

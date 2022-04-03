@@ -1,8 +1,7 @@
 /* eslint-disable prettier/prettier */
 /* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
-import { startPage } from './index.js';
-import Img from './img/рубашка.png';
+import { startPage } from './index';
 
 const startPosition = [
     'тузпики',
@@ -43,12 +42,12 @@ const startPosition = [
     '6крести',
 ];
 
-// const CARD_NUMBER = 36;
-const EASY_LEVEL = 6;
-const MIDDLE_LEVEL = 12;
-const HARD_LEVEL = 18;
+const CARD_NUMBER: number = 36;
+const EASY_LEVEL: number = 6;
+const MIDDLE_LEVEL: number = 12;
+const HARD_LEVEL: number = 18;
 
-function createElement(tagName, className) {
+function createElement(tagName: string, className: string) {
     const tag = document.createElement(tagName);
 
     if (className) {
@@ -57,15 +56,17 @@ function createElement(tagName, className) {
     return tag;
 }
 
-export function showPlayPage(dataValue) {
-    const wrap = document.querySelector('.wrap');
-    const container = document.querySelector('.container');
-    wrap.removeChild(container);
+export function showPlayPage(dataValue: string) {
+    const wrap = document.querySelector('.wrap')!;
+    const container = document.querySelector('.container')!;
 
     const wrapperCards = document.createElement('div');
     wrapperCards.classList.add('wrapper-cards');
     wrap.appendChild(wrapperCards);
-
+    interface wrap {
+        readonly wrap: HTMLDivElement;
+    }
+    wrap.removeChild(container);
     const containerTop = document.createElement('div');
     containerTop.classList.add('container-top');
     wrapperCards.appendChild(containerTop);
@@ -111,35 +112,98 @@ export function showPlayPage(dataValue) {
         startPage();
     });
     if (dataValue === '1') {
-      AddcardBack(EASY_LEVEL);
-  } else if (dataValue === '2') {
-      AddcardBack(MIDDLE_LEVEL);
-  } else if (dataValue === '3') {
-      AddcardBack(HARD_LEVEL);
-  }
+        findCards(EASY_LEVEL);
+    } else if (dataValue === '2') {
+        findCards(MIDDLE_LEVEL);
+    } else if (dataValue === '3') {
+        findCards(HARD_LEVEL);
+    }
 }
 
-function AddcardBack(gameValue) {
-    const containerCard = document.querySelector('.container__card');
+const createRandomNumber = (num: number) => Math.ceil(Math.random() * num);
+
+function shuffle(array: any) {
+    array.sort(() => Math.random() - 0.5);
+}
+
+let arrPlay: string[] = [];
+let arrayBack: string[] = [];
+
+function findCardBack(num: number) {
+    arrayBack = [];
+    const back: string = 'рубашка';
+    for (let i = 0; i < num; i++) {
+        arrayBack.push(back);
+    }
+    return arrayBack;
+}
+
+function findCards(gameValue: number) {
+    arrPlay = [];
+    const coupleValue = gameValue / 2;
+    for (let i = 0; i < coupleValue; i++) {
+        let valueCard = createRandomNumber(CARD_NUMBER);
+        arrPlay.push(startPosition[valueCard]);
+        arrPlay.push(startPosition[valueCard]);
+    }
+
+    shuffle(arrPlay);
+    AddcardBack(arrPlay, gameValue);
+    findCardBack(gameValue);
+    setTimeout(() => {
+        cleanCardWrap();
+    }, 600);
+    setTimeout(() => {
+        AddcardBack(arrayBack, gameValue);
+    }, 600);
+}
+
+function cleanCardWrap() {
+    let containerCard = document.querySelector('.container__card')!;
+
+    while (containerCard.firstChild) {
+        containerCard.removeChild(containerCard.firstChild);
+    }
+}
+
+function AddcardBack(arr: string[], gameValue: number) {
+    const containerCard = document.querySelector('.container__card')!;
     for (let i = 0; i < gameValue; i++) {
         const wrapperCard = document.createElement('div');
-        wrapperCard.classList.add('wrapper__card');
+        wrapperCard.classList.add('wrapper__card', `wrapper__card${i}`);
         containerCard.appendChild(wrapperCard);
-
-        // const cardBackImg = document.createElement('img');
-
-        const myIcon = new Image();
-        myIcon.classList.add('card__img');
-        myIcon.src = Img;
-        wrapperCard.appendChild(myIcon);
+        const cardImg = new Image();
+        cardImg.classList.add('card__img', `card__img${i}`);
+        cardImg.src = `./img/${arr[i]}.png`;
+        cardImg.id = `${[i]}`;
+        wrapperCard.appendChild(cardImg);
     }
+
+    containerCard.addEventListener('click', (event) => {
+        const userClick = event.target as HTMLElement;
+        const userClickNumber = Number(userClick.id);
+        processingClicksCards(userClickNumber);
+    });
+}
+
+function processingClicksCards(userClickNumber: number) {
+    arrayBack[userClickNumber] = arrPlay[userClickNumber];
+    cleanCardWrap();
+    AddcardBack(arrayBack, arrayBack.length);
+
+    cheakGameCondition()
+}
+
+function cheakGameCondition() {
+  if(JSON.stringify(arrayBack) == JSON.stringify(arrPlay)) {
+    resultWin() 
+  }
 }
 
 function AddcardStartPosition() {
     for (let i = 0; i < startPosition.length; i++) {
         const wrapperCard = document.createElement('div');
         wrapperCard.classList.add('wrapper__card');
-        // containerCard.appendChild(wrapperCard);
         const cardImg = document.createElement('img');
         cardImg.classList.add('card__img');
         cardImg.src = `./img/${startPosition[i]}.png`;
@@ -147,10 +211,15 @@ function AddcardStartPosition() {
     }
 }
 
-function addResultPopup(urlimg, title, text, time) {
-    const wrapperCards = document.querySelector('.wrapper-cards');
+function addResultPopup(
+    urlimg: string,
+    title: string,
+    text: string,
+    time: string
+) {
+    const wrapperCards = document.querySelector('.wrapper-cards')!;
 
-    createElement('div', 'popup', wrapperCards);
+    createElement('div', 'popup');
 
     const popup = document.createElement('div');
     popup.classList.add('popup');
@@ -188,23 +257,25 @@ function addResultPopup(urlimg, title, text, time) {
     popupButton.classList.add('popup__button', 'button');
     popupButton.textContent = 'Играть снова';
     popupWrap.appendChild(popupButton);
+
+    popupButton.addEventListener('click', () => {
+      console.log('успех')
+      const wrap = document.querySelector('.wrap')!;
+      const wrapperCards = document.querySelector('.wrapper-cards')!;
+      wrap.removeChild(wrapperCards);
+      startPage();
+      });
 }
 
-// function resultWin() {
-//     AddcardStartPosition();
-//     addResultPopup('winPic', 'Вы выиграли!', 'Затраченное время:', '01.20');
-// }
+function resultWin() {
+    AddcardStartPosition();
+    addResultPopup('winPic', 'Вы выиграли!', 'Затраченное время:', '01.20');
+}
 
 // function resultLose() {
 //     AddcardStartPosition();
 //     addResultPopup('losePic', 'Вы проиграли!', 'Затраченное время:', '01.20');
 
-//     const popupButton = document.querySelector('.popup__button');
-
-//     // popupButton.addEventListener('click', () => {
-//     //   console.log('успех')
-//     //       location.href = 'index.html';
-//     //   });
 // }
 
 // resultWin()
