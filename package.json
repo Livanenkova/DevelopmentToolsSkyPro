@@ -10,7 +10,7 @@
         "format": "prettier --write ./src",
         "lint:css": "stylelint ./src/**.css",
         "lint": "npm run lint:js && npm run lint:css",
-        "lint:js": "eslint \"**/*.{ts,tsx}\"",
+        "lint:js": "eslint \"**/*.ts\"",
         "clean": "rm -rf node_modules/",
         "build": "cross-env NODE_ENV=production webpack",
         "prepare": "husky install"
@@ -34,6 +34,8 @@
         "@babel/core": "^7.17.8",
         "@babel/eslint-parser": "^7.17.0",
         "@types/lodash": "^4.14.181",
+        "@typescript-eslint/eslint-plugin": "^5.17.0",
+        "@typescript-eslint/parser": "^5.17.0",
         "babel-loader": "^8.2.4",
         "copy-webpack-plugin": "^10.2.4",
         "cross-env": "^7.0.3",

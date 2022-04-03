@@ -63,9 +63,9 @@ export function showPlayPage(dataValue: string) {
     const wrapperCards = document.createElement('div');
     wrapperCards.classList.add('wrapper-cards');
     wrap.appendChild(wrapperCards);
-    interface wrap {
-        readonly wrap: HTMLDivElement;
-    }
+    // interface wrap {
+    //     readonly wrap: HTMLDivElement;
+    // }
     wrap.removeChild(container);
     const containerTop = document.createElement('div');
     containerTop.classList.add('container-top');
@@ -195,7 +195,7 @@ function processingClicksCards(userClickNumber: number) {
 }
 
 function cheakGameCondition() {
-  if(JSON.stringify(arrayBack) == JSON.stringify(arrPlay)) {
+  if(JSON.stringify(arrayBack) === JSON.stringify(arrPlay)) {
     resultWin() 
   }
 }

@@ -1,6 +1,6 @@
 import './style.css';
 import { showPlayPage } from './play';
-import * as _ from 'lodash';
+// import * as _ from 'lodash';
 
 const wrap = document.createElement('div');
 wrap.classList.add('wrap');
@@ -63,9 +63,9 @@ export function startPage() {
         target.style.border = '2px #004980 solid';
     });
 
-    interface complexityButton {
-        readonly complexityButton: HTMLButtonElement;
-    }
+    // interface complexityButton {
+    //     readonly complexityButton: HTMLButtonElement;
+    // }
 
     complexityButton.addEventListener('click', () => {
         if (dataValue === '1') {
