@@ -1,5 +1,5 @@
 import './style.css';
-import { showPlayPage } from './play';
+import { showPlayPage, createElement } from './play';
 // import * as _ from 'lodash';
 
 const wrap = document.createElement('div');
@@ -7,44 +7,31 @@ wrap.classList.add('wrap');
 document.body.appendChild(wrap);
 
 export function startPage() {
-    const container = document.createElement('div');
-    container.classList.add('container');
+    const container = createElement('div', 'container');
     wrap.appendChild(container);
 
-    const complexity = document.createElement('div');
-    complexity.classList.add('complexity');
+    const complexity = createElement('div', 'complexity');
     container.appendChild(complexity);
 
-    const complexityTitle = document.createElement('h2');
-    complexityTitle.classList.add('complexity__title');
+    const complexityTitle = createElement('h2', 'complexity__title');
     complexityTitle.textContent = 'Выбери сложность';
     complexity.appendChild(complexityTitle);
 
-    const complexityValue = document.createElement('div');
-    complexityValue.classList.add('complexity__value');
+    const complexityValue = createElement('div', 'complexity__value');
     complexity.appendChild(complexityValue);
 
-    const complexityValueItem1 = document.createElement('div');
-    complexityValueItem1.classList.add(
-        'complexity__value-item',
-        'complexity__value-item--1'
-    );
+    const complexityValueItem1 = createElement('div', 'complexity__value-item');
+    complexityValueItem1.classList.add('complexity__value-item--1');
     complexityValueItem1.textContent = '1';
     complexityValue.appendChild(complexityValueItem1);
 
-    const complexityValueItem2 = document.createElement('div');
-    complexityValueItem2.classList.add(
-        'complexity__value-item',
-        'complexity__value-item--2'
-    );
+    const complexityValueItem2 = createElement('div', 'complexity__value-item');
+    complexityValueItem2.classList.add('complexity__value-item--2');
     complexityValueItem2.textContent = '2';
     complexityValue.appendChild(complexityValueItem2);
 
-    const complexityValueItem3 = document.createElement('div');
-    complexityValueItem3.classList.add(
-        'complexity__value-item',
-        'complexity__value-item--3'
-    );
+    const complexityValueItem3 = createElement('div', 'complexity__value-item');
+    complexityValueItem3.classList.add('complexity__value-item--3');
     complexityValueItem3.textContent = '3';
     complexityValue.appendChild(complexityValueItem3);
 

@@ -42,69 +42,103 @@ const startPosition = [
     '6крести',
 ];
 
+let startTime: number;
+let endTime: number;
+let topTimerInterval:any;
+
+const arrayCardIndex = [
+    'туз',
+    'король',
+    'дама',
+    'валет',
+    '10',
+    '9',
+    '8',
+    '7',
+    '6',
+] as const;
+
+const arrayCardSuits = ['бубны', 'крести', 'пики', 'черви'] as const;
+
 const CARD_NUMBER: number = 36;
 const EASY_LEVEL: number = 6;
 const MIDDLE_LEVEL: number = 12;
 const HARD_LEVEL: number = 18;
 
-function createElement(tagName: string, className: string) {
+const createRandomNumber = (num: number) => Math.ceil(Math.random() * num);
+
+function createCard() {
+    return `${arrayCardIndex[createRandomNumber(arrayCardIndex.length - 1)]}${
+        arrayCardSuits[createRandomNumber(arrayCardSuits.length - 1)]
+    }`;
+}
+
+export function createElement(tagName: string, className: string) {
     const tag = document.createElement(tagName);
 
     if (className) {
         tag.classList.add(className);
     }
+
     return tag;
+}
+
+function shuffle(array: any) {
+    array.sort(() => Math.random() - 0.5);
+}
+
+function findTime() {
+  endTime = Date.now(); // заканчиваем отсчёт времени
+  const timerValue = endTime - startTime;
+  const sek:number = Math.floor((timerValue / 1000) % 60);
+  const min:number = Math.floor((timerValue / (1000 * 60)) % 60);
+  const answer = `${min}:${sek}`;
+  return answer
+  
 }
 
 export function showPlayPage(dataValue: string) {
     const wrap = document.querySelector('.wrap')!;
     const container = document.querySelector('.container')!;
 
-    const wrapperCards = document.createElement('div');
-    wrapperCards.classList.add('wrapper-cards');
+    const wrapperCards = createElement('div', 'wrapper-cards');
+
     wrap.appendChild(wrapperCards);
     // interface wrap {
     //     readonly wrap: HTMLDivElement;
     // }
     wrap.removeChild(container);
-    const containerTop = document.createElement('div');
-    containerTop.classList.add('container-top');
+
+    const containerTop = createElement('div', 'container-top');
     wrapperCards.appendChild(containerTop);
 
-    const containerTimer = document.createElement('div');
-    containerTimer.classList.add('container__timer');
+    const containerTimer = createElement('div', 'container__timer');
     containerTop.appendChild(containerTimer);
 
-    const containerTimerText = document.createElement('div');
-    containerTimerText.classList.add('container__timer-text');
+    const containerTimerText = createElement('div', 'container__timer-text');
     containerTimer.appendChild(containerTimerText);
 
-    const timerTextMin = document.createElement('div');
-    timerTextMin.classList.add('timer__text-min');
+    const timerTextMin = createElement('div', 'timer__text-min');
     timerTextMin.textContent = 'min';
     containerTimerText.appendChild(timerTextMin);
 
-    const timerTextSec = document.createElement('div');
-    timerTextSec.classList.add('timer__text-sec');
+    const timerTextSec = createElement('div', 'timer__text-sec');
     timerTextSec.textContent = 'sek';
     containerTimerText.appendChild(timerTextSec);
 
-    const timerNumber = document.createElement('div');
-    timerNumber.classList.add('timer-number');
+    const timerNumber = createElement('div', 'timer-number');
     timerNumber.textContent = '00.00';
     containerTimer.appendChild(timerNumber);
 
-    const containerButton = document.createElement('div');
-    containerButton.classList.add('container__button');
+    const containerButton = createElement('div', 'container__button');
     containerTop.appendChild(containerButton);
 
-    const startBtn = document.createElement('button');
-    startBtn.classList.add('start-btn,', 'button');
+    const startBtn = createElement('button', 'start-btn');
+    startBtn.classList.add('button');
     startBtn.textContent = 'Начать заново';
     containerButton.appendChild(startBtn);
 
-    const containerCard = document.createElement('div');
-    containerCard.classList.add('container__card');
+    const containerCard = createElement('div', 'container__card');
     wrapperCards.appendChild(containerCard);
 
     startBtn.addEventListener('click', () => {
@@ -120,10 +154,13 @@ export function showPlayPage(dataValue: string) {
     }
 }
 
-const createRandomNumber = (num: number) => Math.ceil(Math.random() * num);
 
-function shuffle(array: any) {
-    array.sort(() => Math.random() - 0.5);
+
+function updateTopTimer() {
+  const time = findTime();
+  console.log(`${time} - таймер`)
+  const timerNumber = document.querySelector('.timer-number')!;
+  timerNumber.textContent = `${time}`;
 }
 
 let arrPlay: string[] = [];
@@ -140,22 +177,28 @@ function findCardBack(num: number) {
 
 function findCards(gameValue: number) {
     arrPlay = [];
+    console.log(gameValue);
     const coupleValue = gameValue / 2;
+    console.log(coupleValue)
     for (let i = 0; i < coupleValue; i++) {
-        let valueCard = createRandomNumber(CARD_NUMBER);
-        arrPlay.push(startPosition[valueCard]);
-        arrPlay.push(startPosition[valueCard]);
+        arrPlay.push(createCard());
     }
-
+    console.log(arrPlay)
+    const arrConcat = arrPlay.concat(arrPlay);
+    arrPlay = arrConcat;
     shuffle(arrPlay);
     AddcardBack(arrPlay, gameValue);
     findCardBack(gameValue);
+    startTime = Date.now();
     setTimeout(() => {
         cleanCardWrap();
     }, 600);
+    topTimerInterval = setInterval(() => {
+      updateTopTimer() 
+    }, 1000);
     setTimeout(() => {
         AddcardBack(arrayBack, gameValue);
-    }, 600);
+    }, 1000);
 }
 
 function cleanCardWrap() {
@@ -191,13 +234,15 @@ function processingClicksCards(userClickNumber: number) {
     cleanCardWrap();
     AddcardBack(arrayBack, arrayBack.length);
 
-    cheakGameCondition()
+    cheakGameCondition();
 }
 
 function cheakGameCondition() {
-  if(JSON.stringify(arrayBack) === JSON.stringify(arrPlay)) {
-    resultWin() 
-  }
+    if (JSON.stringify(arrayBack) === JSON.stringify(arrPlay)) {
+      setTimeout(() => {
+        resultWin();;
+    }, 400);
+    }
 }
 
 function AddcardStartPosition() {
@@ -221,16 +266,13 @@ function addResultPopup(
 
     createElement('div', 'popup');
 
-    const popup = document.createElement('div');
-    popup.classList.add('popup');
+    const popup = createElement('div', 'popup');
     wrapperCards.appendChild(popup);
 
-    const popupWrap = document.createElement('div');
-    popupWrap.classList.add('popup__wrap');
+    const popupWrap = createElement('div', 'popup__wrap');
     popup.appendChild(popupWrap);
 
-    const popupWrapImg = document.createElement('div');
-    popupWrapImg.classList.add('popup__wrap-img');
+    const popupWrapImg = createElement('div', 'popup__wrap-img');
     popupWrap.appendChild(popupWrapImg);
 
     const popupImg = document.createElement('img');
@@ -238,39 +280,44 @@ function addResultPopup(
     popupImg.src = `./img/${urlimg}.png`;
     popupWrapImg.appendChild(popupImg);
 
-    const popupTitle = document.createElement('h2');
-    popupTitle.classList.add('popup__title');
+    const popupTitle = createElement('h2', 'popup__title');
     popupTitle.textContent = title;
     popupWrap.appendChild(popupTitle);
 
-    const popupText = document.createElement('div');
-    popupText.classList.add('popup__text');
+    const popupText = createElement('div', 'popup__text');
     popupText.textContent = text;
     popupWrap.appendChild(popupText);
 
-    const popupTime = document.createElement('div');
-    popupTime.classList.add('popup__time');
+    const popupTime = createElement('div', 'popup__time');
     popupTime.textContent = time;
     popupWrap.appendChild(popupTime);
 
-    const popupButton = document.createElement('button');
-    popupButton.classList.add('popup__button', 'button');
+    const popupButton = createElement('button', 'popup__button');
+    popupButton.classList.add('button');
     popupButton.textContent = 'Играть снова';
     popupWrap.appendChild(popupButton);
 
     popupButton.addEventListener('click', () => {
-      console.log('успех')
-      const wrap = document.querySelector('.wrap')!;
-      const wrapperCards = document.querySelector('.wrapper-cards')!;
-      wrap.removeChild(wrapperCards);
-      startPage();
-      });
+        const wrap = document.querySelector('.wrap')!;
+        const wrapperCards = document.querySelector('.wrapper-cards')!;
+        wrap.removeChild(wrapperCards);
+        startPage();
+    });
 }
 
 function resultWin() {
     AddcardStartPosition();
-    addResultPopup('winPic', 'Вы выиграли!', 'Затраченное время:', '01.20');
+    clearInterval(topTimerInterval);
+    const time = findTime();
+    addResultPopup(
+        'winPic',
+        'Вы выиграли!',
+        'Затраченное время:',
+        `${time}`
+    );
 }
+
+
 
 // function resultLose() {
 //     AddcardStartPosition();

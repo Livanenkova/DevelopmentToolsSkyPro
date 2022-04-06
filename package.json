@@ -5,6 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
+        "test2": "jest",
         "start2": "http-server -p 3003",
         "start": "cross-env NODE_ENV=development webpack-dev-server --open",
         "format": "prettier --write ./src",
@@ -48,6 +49,7 @@
         "html-webpack-plugin": "^5.5.0",
         "husky": "^7.0.0",
         "image-webpack-loader": "^8.1.0",
+        "jest": "^27.5.1",
         "mini-css-extract-plugin": "^2.6.0",
         "prettier": "^2.6.0",
         "style-loader": "^3.3.1",
