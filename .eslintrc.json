@@ -11,6 +11,12 @@
         "ecmaVersion": 2020,
         "sourceType": "module"
     },
+    "prettier": [
+      "error",
+      {
+        "endOfLine": "auto"
+      }
+    ],
     "rules": {
         "prettier/prettier": "error",
         "camelcase": ["error"],

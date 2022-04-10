@@ -2,49 +2,10 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
 import { startPage } from './index';
-
-const startPosition = [
-    'тузпики',
-    'корольпики',
-    'дамапики',
-    'валетпики',
-    '10пики',
-    '9пики',
-    '8пики',
-    '7пики',
-    '6пики',
-    'тузчерви',
-    'корольчерви',
-    'дамачерви',
-    'валетчерви',
-    '10черви',
-    '9черви',
-    '8черви',
-    '7черви',
-    '6черви',
-    'тузбубны',
-    'корольбубны',
-    'дамабубны',
-    'валетбубны',
-    '10бубны',
-    '9бубны',
-    '8бубны',
-    '7бубны',
-    '6бубны',
-    'тузкрести',
-    'королькрести',
-    'дамакрести',
-    'валеткрести',
-    '10крести',
-    '9крести',
-    '8крести',
-    '7крести',
-    '6крести',
-];
+import { createRandomNumber, shuffle } from './utils';
 
 let startTime: number;
-let endTime: number;
-let topTimerInterval:any;
+let topTimerInterval: any;
 
 const arrayCardIndex = [
     'туз',
@@ -60,12 +21,9 @@ const arrayCardIndex = [
 
 const arrayCardSuits = ['бубны', 'крести', 'пики', 'черви'] as const;
 
-const CARD_NUMBER: number = 36;
 const EASY_LEVEL: number = 6;
 const MIDDLE_LEVEL: number = 12;
 const HARD_LEVEL: number = 18;
-
-const createRandomNumber = (num: number) => Math.ceil(Math.random() * num);
 
 function createCard() {
     return `${arrayCardIndex[createRandomNumber(arrayCardIndex.length - 1)]}${
@@ -79,22 +37,16 @@ export function createElement(tagName: string, className: string) {
     if (className) {
         tag.classList.add(className);
     }
-
     return tag;
 }
 
-function shuffle(array: any) {
-    array.sort(() => Math.random() - 0.5);
-}
-
-function findTime() {
-  endTime = Date.now(); // заканчиваем отсчёт времени
-  const timerValue = endTime - startTime;
-  const sek:number = Math.floor((timerValue / 1000) % 60);
-  const min:number = Math.floor((timerValue / (1000 * 60)) % 60);
-  const answer = `${min}:${sek}`;
-  return answer
-  
+export function findTime() {
+    const endTime: number = Date.now(); // заканчиваем отсчёт времени
+    const timerValue = endTime - startTime;
+    const sek: number = Math.floor((timerValue / 1000) % 60);
+    const min: number = Math.floor((timerValue / (1000 * 60)) % 60);
+    const answer = `${min}:${sek}`;
+    return answer;
 }
 
 export function showPlayPage(dataValue: string) {
@@ -154,13 +106,10 @@ export function showPlayPage(dataValue: string) {
     }
 }
 
-
-
 function updateTopTimer() {
-  const time = findTime();
-  console.log(`${time} - таймер`)
-  const timerNumber = document.querySelector('.timer-number')!;
-  timerNumber.textContent = `${time}`;
+    const time = findTime();
+    const timerNumber = document.querySelector('.timer-number')!;
+    timerNumber.textContent = `${time}`;
 }
 
 let arrPlay: string[] = [];
@@ -177,28 +126,26 @@ function findCardBack(num: number) {
 
 function findCards(gameValue: number) {
     arrPlay = [];
-    console.log(gameValue);
     const coupleValue = gameValue / 2;
-    console.log(coupleValue)
     for (let i = 0; i < coupleValue; i++) {
         arrPlay.push(createCard());
     }
-    console.log(arrPlay)
+    console.log(arrPlay);
     const arrConcat = arrPlay.concat(arrPlay);
     arrPlay = arrConcat;
     shuffle(arrPlay);
-    AddcardBack(arrPlay, gameValue);
+    AddCard(arrPlay, gameValue);
     findCardBack(gameValue);
     startTime = Date.now();
     setTimeout(() => {
         cleanCardWrap();
-    }, 600);
+    }, 6000);
     topTimerInterval = setInterval(() => {
-      updateTopTimer() 
+        updateTopTimer();
     }, 1000);
     setTimeout(() => {
         AddcardBack(arrayBack, gameValue);
-    }, 1000);
+    }, 6000);
 }
 
 function cleanCardWrap() {
@@ -207,6 +154,20 @@ function cleanCardWrap() {
     while (containerCard.firstChild) {
         containerCard.removeChild(containerCard.firstChild);
     }
+}
+
+function AddCard(arr: string[], gameValue: number) {
+  const containerCard = document.querySelector('.container__card')!;
+  for (let i = 0; i < gameValue; i++) {
+      const wrapperCard = document.createElement('div');
+      wrapperCard.classList.add('wrapper__card', `wrapper__card${i}`);
+      containerCard.appendChild(wrapperCard);
+      const cardImg = new Image();
+      cardImg.classList.add('card__img', `card__img${i}`);
+      cardImg.src = `./img/${arr[i]}.png`;
+      cardImg.id = `${[i]}`;
+      wrapperCard.appendChild(cardImg);
+  }
 }
 
 function AddcardBack(arr: string[], gameValue: number) {
@@ -222,37 +183,51 @@ function AddcardBack(arr: string[], gameValue: number) {
         wrapperCard.appendChild(cardImg);
     }
 
-    containerCard.addEventListener('click', (event) => {
-        const userClick = event.target as HTMLElement;
-        const userClickNumber = Number(userClick.id);
-        processingClicksCards(userClickNumber);
-    });
+    containerCard.addEventListener(
+        'click',
+        (event) => {
+            const userClick = event.target as HTMLElement;
+            const userClickNumber = Number(userClick.id);
+            console.log(userClickNumber);
+            processingClicksCards(userClickNumber);
+        },
+        {once:true}
+    ); 
 }
+
+let cardValue: string[] = [];
+console.log(cardValue)
 
 function processingClicksCards(userClickNumber: number) {
     arrayBack[userClickNumber] = arrPlay[userClickNumber];
+    console.log(arrPlay[userClickNumber])
+    console.log(arrayBack[userClickNumber])
+    cardValue.push(arrPlay[userClickNumber]);
+
+    comparison2Сards(cardValue) 
     cleanCardWrap();
     AddcardBack(arrayBack, arrayBack.length);
-
     cheakGameCondition();
+}
+
+function  comparison2Сards (cardValue:any) {
+    if(cardValue.length === 2 && cardValue[0] === cardValue[1]) {
+      console.log('карточки равны - успех');
+      cardValue.length = 0;
+    } 
+
+    if(cardValue.length === 2 && cardValue[0] != cardValue[1]) {
+      console.log('карточки не равны - проигрыш');
+      cardValue.length = 0;
+      resultLose()
+    } 
 }
 
 function cheakGameCondition() {
     if (JSON.stringify(arrayBack) === JSON.stringify(arrPlay)) {
-      setTimeout(() => {
-        resultWin();;
-    }, 400);
-    }
-}
-
-function AddcardStartPosition() {
-    for (let i = 0; i < startPosition.length; i++) {
-        const wrapperCard = document.createElement('div');
-        wrapperCard.classList.add('wrapper__card');
-        const cardImg = document.createElement('img');
-        cardImg.classList.add('card__img');
-        cardImg.src = `./img/${startPosition[i]}.png`;
-        wrapperCard.appendChild(cardImg);
+        setTimeout(() => {
+            resultWin();
+        }, 400);
     }
 }
 
@@ -306,24 +281,13 @@ function addResultPopup(
 }
 
 function resultWin() {
-    AddcardStartPosition();
     clearInterval(topTimerInterval);
     const time = findTime();
-    addResultPopup(
-        'winPic',
-        'Вы выиграли!',
-        'Затраченное время:',
-        `${time}`
-    );
+    addResultPopup('winPic', 'Вы выиграли!', 'Затраченное время:', `${time}`);
 }
 
-
-
-// function resultLose() {
-//     AddcardStartPosition();
-//     addResultPopup('losePic', 'Вы проиграли!', 'Затраченное время:', '01.20');
-
-// }
-
-// resultWin()
-// resultLose()
+function resultLose() {
+    clearInterval(topTimerInterval);
+    const time = findTime();
+    addResultPopup('losePic', 'Вы проиграли!', 'Затраченное время:', `${time}`);
+}

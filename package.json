@@ -4,8 +4,8 @@
     "description": "Домашняя работа на курсе Инструменты разработки в SkyPro",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "test2": "jest",
+        "test2": "echo \"Error: no test specified\" && exit 1",
+        "test": "jest --collect-coverage",
         "start2": "http-server -p 3003",
         "start": "cross-env NODE_ENV=development webpack-dev-server --open",
         "format": "prettier --write ./src",
@@ -15,6 +15,12 @@
         "clean": "rm -rf node_modules/",
         "build": "cross-env NODE_ENV=production webpack",
         "prepare": "husky install"
+    },
+    "jest": {
+        "moduleNameMapper": {
+            "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+            "\\.(css|less)$": "identity-obj-proxy"
+        }
     },
     "repository": {
         "type": "git",
@@ -28,12 +34,15 @@
     },
     "homepage": "https://github.com/Livanenkova/DevelopmentToolsSkyPro#readme",
     "dependencies": {
+        "@babel/preset-typescript": "^7.16.7",
+        "@types/jest": "^27.4.1",
         "http-server": "^14.1.0",
         "lodash": "^4.17.21"
     },
     "devDependencies": {
         "@babel/core": "^7.17.8",
         "@babel/eslint-parser": "^7.17.0",
+        "@babel/preset-env": "^7.16.11",
         "@types/lodash": "^4.14.181",
         "@typescript-eslint/eslint-plugin": "^5.17.0",
         "@typescript-eslint/parser": "^5.17.0",
@@ -48,6 +57,7 @@
         "file-loader": "^6.2.0",
         "html-webpack-plugin": "^5.5.0",
         "husky": "^7.0.0",
+        "identity-obj-proxy": "^3.0.0",
         "image-webpack-loader": "^8.1.0",
         "jest": "^27.5.1",
         "mini-css-extract-plugin": "^2.6.0",
