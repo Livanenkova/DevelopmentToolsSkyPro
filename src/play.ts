@@ -216,7 +216,7 @@ function  comparison2Сards (cardValue:any) {
       cardValue.length = 0;
     } 
 
-    if(cardValue.length === 2 && cardValue[0] != cardValue[1]) {
+    if(cardValue.length === 2 && cardValue[0] !== cardValue[1]) {
       console.log('карточки не равны - проигрыш');
       cardValue.length = 0;
       resultLose()
