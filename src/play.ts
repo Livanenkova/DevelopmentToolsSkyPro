@@ -133,7 +133,9 @@ function findCards(gameValue: number) {
     console.log(arrPlay);
     const arrConcat = arrPlay.concat(arrPlay);
     arrPlay = arrConcat;
+    console.log(arrPlay)
     shuffle(arrPlay);
+    console.log(arrPlay)
     AddCard(arrPlay, gameValue);
     findCardBack(gameValue);
     startTime = Date.now();
