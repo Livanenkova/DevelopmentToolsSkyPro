@@ -182,3 +182,7 @@ body {
     line-height: 32px;
     border: none;
 }
+
+.foo {
+    background-color: tomato;
+}

@@ -1,21 +1,6 @@
-{
-  extends:
+extends:
     [
         'stylelint-config-standard',
         'stylelint-config-prettier',
         'stylelint-prettier/recommended',
-    ],
-  "plugins": [
-    "stylelint-selector-bem-pattern"
-  ],
-  "rules": {
-    "plugin/selector-bem-pattern": {
-      "componentName": "[A-Z]+",
-      "componentSelectors": {
-        "initial": "^\\.{componentName}(?:-[a-z]+)?$",
-        "combined": "^\\.combined-{componentName}-[a-z]+$"
-      },
-      "utilitySelectors": "^\\.util-[a-z]+$"
-    },
-  }
-}
+    ]
