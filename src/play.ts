@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable prettier/prettier */
 import { startPage } from './index';
-import { createRandomNumber, shuffle } from './utils';
+import { createRandomNumber, shuffleArray } from './utils';
 
 let startTime: number;
 let topTimerInterval: any;
@@ -24,6 +24,8 @@ const arrayCardSuits = ['бубны', 'крести', 'пики', 'черви'] 
 const EASY_LEVEL: number = 6;
 const MIDDLE_LEVEL: number = 12;
 const HARD_LEVEL: number = 18;
+const CARD_DISPLAY_TIME: number = 4000;
+const TIMER_UPDATE_TIME: number = 1000;
 
 function createCard() {
     return `${arrayCardIndex[createRandomNumber(arrayCardIndex.length - 1)]}${
@@ -41,12 +43,25 @@ export function createElement(tagName: string, className: string) {
 }
 
 export function findTime() {
-    const endTime: number = Date.now(); // заканчиваем отсчёт времени
+    const endTime: number = Date.now();
     const timerValue = endTime - startTime;
-    const sek: number = Math.floor((timerValue / 1000) % 60);
+    let sek: number = Math.floor((timerValue / 1000) % 60);
     const min: number = Math.floor((timerValue / (1000 * 60)) % 60);
-    const answer = `${min}:${sek}`;
-    return answer;
+
+    if(sek < 10  && min < 10  ) {
+      const answer = `0${min}:0${sek}`;
+      return answer;
+    }
+
+    if(sek < 10 ) {
+      const answer = `${min}:0${sek}`;
+      return answer;
+    }
+
+    if(min < 10 ) {
+      const answer = `0${min}:${sek}`;
+      return answer;
+    }
 }
 
 export function showPlayPage(dataValue: string) {
@@ -130,24 +145,21 @@ function findCards(gameValue: number) {
     for (let i = 0; i < coupleValue; i++) {
         arrPlay.push(createCard());
     }
-    console.log(arrPlay);
     const arrConcat = arrPlay.concat(arrPlay);
     arrPlay = arrConcat;
-    console.log(arrPlay)
-    shuffle(arrPlay);
-    console.log(arrPlay)
+    shuffleArray(arrPlay);
     AddCard(arrPlay, gameValue);
     findCardBack(gameValue);
     startTime = Date.now();
     setTimeout(() => {
         cleanCardWrap();
-    }, 6000);
+    }, CARD_DISPLAY_TIME);
     topTimerInterval = setInterval(() => {
         updateTopTimer();
-    }, 1000);
+    }, TIMER_UPDATE_TIME);
     setTimeout(() => {
         AddcardBack(arrayBack, gameValue);
-    }, 6000);
+    }, CARD_DISPLAY_TIME);
 }
 
 function cleanCardWrap() {
@@ -174,17 +186,7 @@ function AddCard(arr: string[], gameValue: number) {
 
 function AddcardBack(arr: string[], gameValue: number) {
     const containerCard = document.querySelector('.container__card')!;
-    for (let i = 0; i < gameValue; i++) {
-        const wrapperCard = document.createElement('div');
-        wrapperCard.classList.add('wrapper__card', `wrapper__card${i}`);
-        containerCard.appendChild(wrapperCard);
-        const cardImg = new Image();
-        cardImg.classList.add('card__img', `card__img${i}`);
-        cardImg.src = `./img/${arr[i]}.png`;
-        cardImg.id = `${[i]}`;
-        wrapperCard.appendChild(cardImg);
-    }
-
+    AddCard(arr, gameValue);
     containerCard.addEventListener(
         'click',
         (event) => {
